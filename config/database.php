@@ -1,0 +1,30 @@
+<?php
+
+class Database
+{
+    private $host = "localhost";
+    private $dbname = "uniska_latihan_mvc_2026";
+    private $username = "root";
+    private $password = "";
+
+    public function getConnection()
+    {
+        try {
+
+            $conn = new PDO(
+                "mysql:host=$this->host;dbname=$this->dbname",
+                $this->username,
+                $this->password
+            );
+
+            // mode error PDO
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            return $conn;
+
+        } catch (PDOException $e) {
+
+            die("Koneksi gagal : " . $e->getMessage());
+        }
+    }
+}
