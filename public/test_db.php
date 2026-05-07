@@ -1,10 +1,8 @@
 <?php
 
-require_once "../config/database.php";
+require_once "../core/Database.php";
 
-$db = new Database();
-
-$conn = $db->getConnection();
+$conn = Database::getConnection();
 
 if ($conn) {
 
