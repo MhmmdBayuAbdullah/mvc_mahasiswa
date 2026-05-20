@@ -9,6 +9,7 @@ class Mahasiswa
         $this->conn = Database::getConnection();
     }
 
+    // ambil semua data
     public function getAll()
     {
         $query = "SELECT * FROM mahasiswa ORDER BY id DESC";
@@ -20,7 +21,21 @@ class Mahasiswa
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // cek npm
+    // cari berdasarkan id
+    public function find($id)
+    {
+        $query = "SELECT * FROM mahasiswa WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // cari berdasarkan npm
     public function findByNpm($npm)
     {
         $query = "SELECT * FROM mahasiswa WHERE npm = :npm";
@@ -34,7 +49,7 @@ class Mahasiswa
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // create data
+    // tambah data
     public function create($data)
     {
         $query = "
@@ -74,19 +89,6 @@ class Mahasiswa
             ':tanggal_lahir' => $data['tanggal_lahir'],
             ':jenis_kelamin' => $data['jenis_kelamin']
         ]);
-    }
-    // cari berdasarkan id
-    public function find($id)
-    {
-        $query = "SELECT * FROM mahasiswa WHERE id = :id";
-
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':id', $id);
-
-        $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     // update data
@@ -129,5 +131,46 @@ class Mahasiswa
         return $stmt->execute([
             ':id' => $id
         ]);
+    }
+
+    // search dan filter
+    public function searchAndFilter($search = '', $jurusan = '')
+    {
+        $query = "SELECT * FROM mahasiswa";
+
+        $conditions = [];
+
+        $params = [];
+
+        // search npm atau nama
+        if (!empty($search)) {
+
+            $conditions[] =
+                "(npm LIKE :search OR nama_lengkap LIKE :search)";
+
+            $params[':search'] = "%$search%";
+        }
+
+        // filter jurusan
+        if (!empty($jurusan)) {
+
+            $conditions[] = "jurusan = :jurusan";
+
+            $params[':jurusan'] = $jurusan;
+        }
+
+        // gabungkan kondisi
+        if (count($conditions) > 0) {
+
+            $query .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        $query .= " ORDER BY id DESC";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

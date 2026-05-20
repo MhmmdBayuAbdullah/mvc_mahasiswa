@@ -45,7 +45,9 @@ class Router
         }
 
         // require controller
-        require_once "../app/controllers/" . $this->controller . ".php";
+        require_once "../app/controllers/" .
+            $this->controller .
+            ".php";
 
         $this->controller = new $this->controller;
 
@@ -66,7 +68,12 @@ class Router
         }
 
         // parameter
-        $this->params = $url ? array_values($url) : [];
+        $this->params = [];
+
+        if (!empty($url)) {
+
+            $this->params = array_values($url);
+        }
 
         // jalankan controller
         call_user_func_array(

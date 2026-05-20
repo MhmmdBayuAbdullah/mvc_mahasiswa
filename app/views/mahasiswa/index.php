@@ -5,9 +5,14 @@
 
     <style>
 
+        body {
+            font-family: Arial, sans-serif;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
+            margin-top: 15px;
         }
 
         table, th, td {
@@ -37,6 +42,13 @@
             color: #721c24;
         }
 
+        .btn {
+            padding: 6px 10px;
+            border: 1px solid black;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
     </style>
 </head>
 
@@ -60,13 +72,68 @@
     <!-- TOMBOL TAMBAH -->
     <p>
 
-        <a href="<?= BASEURL; ?>/mahasiswa/create">
-
+        <a
+            href="<?= BASEURL; ?>/mahasiswa/create"
+            class="btn"
+        >
             Tambah Mahasiswa
-
         </a>
 
     </p>
+
+    <!-- FORM SEARCH & FILTER -->
+    <form
+        method="POST"
+        action="<?= BASEURL; ?>/mahasiswa/index"
+    >
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Cari npm atau nama..."
+            value="<?= isset($search) ? $search : ''; ?>"
+        >
+
+        <select name="jurusan">
+
+            <option value="">
+                Semua Jurusan
+            </option>
+
+            <option
+                value="Teknik Informatika"
+                <?= (isset($jurusan) &&
+                    $jurusan == 'Teknik Informatika')
+                    ? 'selected'
+                    : ''; ?>
+            >
+                Teknik Informatika
+            </option>
+
+            <option
+                value="Sistem Informasi"
+                <?= (isset($jurusan) &&
+                    $jurusan == 'Sistem Informasi')
+                    ? 'selected'
+                    : ''; ?>
+            >
+                Sistem Informasi
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Cari
+        </button>
+
+        <a
+            href="<?= BASEURL; ?>/mahasiswa/index"
+            class="btn"
+        >
+            Reset
+        </a>
+
+    </form>
 
     <table>
 
@@ -153,7 +220,7 @@
 
                 <td colspan="10">
 
-                    Data mahasiswa kosong
+                    Data mahasiswa tidak ditemukan
 
                 </td>
 

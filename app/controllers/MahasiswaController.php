@@ -2,16 +2,45 @@
 
 class MahasiswaController extends Controller
 {
+    // tampil data mahasiswa
     public function index()
     {
         $mahasiswaModel = $this->model('Mahasiswa');
 
-        $data['mahasiswa'] = $mahasiswaModel->getAll();
+        // ambil input search
+        $search = isset($_POST['search'])
+            ? trim($_POST['search'])
+            : '';
+
+        // ambil input jurusan
+        $jurusan = isset($_POST['jurusan'])
+            ? trim($_POST['jurusan'])
+            : '';
+
+        // cek search/filter
+        if ($search != '' || $jurusan != '') {
+
+            $data['mahasiswa'] =
+                $mahasiswaModel->searchAndFilter(
+                    $search,
+                    $jurusan
+                );
+
+        } else {
+
+            $data['mahasiswa'] =
+                $mahasiswaModel->getAll();
+        }
+
+        // kirim data ke view
+        $data['search'] = $search;
+
+        $data['jurusan'] = $jurusan;
 
         $this->view('mahasiswa/index', $data);
     }
 
-    // tampil form create
+    // form tambah data
     public function create()
     {
         $this->view('mahasiswa/create');
@@ -23,69 +52,82 @@ class MahasiswaController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $data = [
+
                 'npm' => trim($_POST['npm']),
-                'nama_lengkap' => trim($_POST['nama_lengkap']),
-                'fakultas' => trim($_POST['fakultas']),
-                'jurusan' => trim($_POST['jurusan']),
-                'tempat_lahir' => trim($_POST['tempat_lahir']),
-                'tanggal_lahir' => trim($_POST['tanggal_lahir']),
-                'jenis_kelamin' => trim($_POST['jenis_kelamin'])
+
+                'nama_lengkap' =>
+                    trim($_POST['nama_lengkap']),
+
+                'fakultas' =>
+                    trim($_POST['fakultas']),
+
+                'jurusan' =>
+                    trim($_POST['jurusan']),
+
+                'tempat_lahir' =>
+                    trim($_POST['tempat_lahir']),
+
+                'tanggal_lahir' =>
+                    trim($_POST['tanggal_lahir']),
+
+                'jenis_kelamin' =>
+                    trim($_POST['jenis_kelamin'])
             ];
 
             $mahasiswaModel = $this->model('Mahasiswa');
 
-            // VALIDASI
+            // validasi npm
             if (empty($data['npm'])) {
 
-                $this->setFlash('NPM wajib diisi', 'error');
+                $this->setFlash(
+                    'NPM wajib diisi',
+                    'error'
+                );
 
-                header('Location: ' . BASEURL . '/mahasiswa/create');
+                header(
+                    'Location: ' .
+                    BASEURL .
+                    '/mahasiswa/create'
+                );
+
                 exit;
             }
 
+            // cek npm unik
             if ($mahasiswaModel->findByNpm($data['npm'])) {
 
-                $this->setFlash('NPM sudah digunakan', 'error');
+                $this->setFlash(
+                    'NPM sudah digunakan',
+                    'error'
+                );
 
-                header('Location: ' . BASEURL . '/mahasiswa/create');
+                header(
+                    'Location: ' .
+                    BASEURL .
+                    '/mahasiswa/create'
+                );
+
                 exit;
             }
 
+            // validasi nama
             if (empty($data['nama_lengkap'])) {
 
-                $this->setFlash('Nama lengkap wajib diisi', 'error');
+                $this->setFlash(
+                    'Nama lengkap wajib diisi',
+                    'error'
+                );
 
-                header('Location: ' . BASEURL . '/mahasiswa/create');
+                header(
+                    'Location: ' .
+                    BASEURL .
+                    '/mahasiswa/create'
+                );
+
                 exit;
             }
 
-            $jurusanValid = [
-                'Teknik Informatika',
-                'Sistem Informasi'
-            ];
-
-            if (!in_array($data['jurusan'], $jurusanValid)) {
-
-                $this->setFlash('Jurusan tidak valid', 'error');
-
-                header('Location: ' . BASEURL . '/mahasiswa/create');
-                exit;
-            }
-
-            $jkValid = [
-                'Laki-laki',
-                'Perempuan'
-            ];
-
-            if (!in_array($data['jenis_kelamin'], $jkValid)) {
-
-                $this->setFlash('Jenis kelamin tidak valid', 'error');
-
-                header('Location: ' . BASEURL . '/mahasiswa/create');
-                exit;
-            }
-
-            // simpan
+            // simpan data
             if ($mahasiswaModel->create($data)) {
 
                 $this->setFlash(
@@ -93,7 +135,11 @@ class MahasiswaController extends Controller
                     'success'
                 );
 
-                header('Location: ' . BASEURL . '/mahasiswa/index');
+                header(
+                    'Location: ' .
+                    BASEURL .
+                    '/mahasiswa/index'
+                );
 
             } else {
 
@@ -102,19 +148,26 @@ class MahasiswaController extends Controller
                     'error'
                 );
 
-                header('Location: ' . BASEURL . '/mahasiswa/create');
+                header(
+                    'Location: ' .
+                    BASEURL .
+                    '/mahasiswa/create'
+                );
             }
 
             exit;
         }
     }
+
     // form edit
     public function edit($id)
     {
         $mahasiswaModel = $this->model('Mahasiswa');
 
-        $data['mahasiswa'] = $mahasiswaModel->find($id);
+        $data['mahasiswa'] =
+            $mahasiswaModel->find($id);
 
+        // cek data
         if (!$data['mahasiswa']) {
 
             $this->setFlash(
@@ -122,7 +175,12 @@ class MahasiswaController extends Controller
                 'error'
             );
 
-            header('Location: ' . BASEURL . '/mahasiswa/index');
+            header(
+                'Location: ' .
+                BASEURL .
+                '/mahasiswa/index'
+            );
+
             exit;
         }
 
@@ -135,34 +193,31 @@ class MahasiswaController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $data = [
+
                 'npm' => trim($_POST['npm']),
-                'nama_lengkap' => trim($_POST['nama_lengkap']),
-                'fakultas' => trim($_POST['fakultas']),
-                'jurusan' => trim($_POST['jurusan']),
-                'tempat_lahir' => trim($_POST['tempat_lahir']),
-                'tanggal_lahir' => trim($_POST['tanggal_lahir']),
-                'jenis_kelamin' => trim($_POST['jenis_kelamin'])
+
+                'nama_lengkap' =>
+                    trim($_POST['nama_lengkap']),
+
+                'fakultas' =>
+                    trim($_POST['fakultas']),
+
+                'jurusan' =>
+                    trim($_POST['jurusan']),
+
+                'tempat_lahir' =>
+                    trim($_POST['tempat_lahir']),
+
+                'tanggal_lahir' =>
+                    trim($_POST['tanggal_lahir']),
+
+                'jenis_kelamin' =>
+                    trim($_POST['jenis_kelamin'])
             ];
 
             $mahasiswaModel = $this->model('Mahasiswa');
 
-            // validasi
-            if (empty($data['npm'])) {
-
-                $this->setFlash('NPM wajib diisi', 'error');
-
-                header('Location: ' . BASEURL . '/mahasiswa/edit/' . $id);
-                exit;
-            }
-
-            if (empty($data['nama_lengkap'])) {
-
-                $this->setFlash('Nama lengkap wajib diisi', 'error');
-
-                header('Location: ' . BASEURL . '/mahasiswa/edit/' . $id);
-                exit;
-            }
-
+            // update data
             if ($mahasiswaModel->update($id, $data)) {
 
                 $this->setFlash(
@@ -170,7 +225,11 @@ class MahasiswaController extends Controller
                     'success'
                 );
 
-                header('Location: ' . BASEURL . '/mahasiswa/index');
+                header(
+                    'Location: ' .
+                    BASEURL .
+                    '/mahasiswa/index'
+                );
 
             } else {
 
@@ -179,7 +238,11 @@ class MahasiswaController extends Controller
                     'error'
                 );
 
-                header('Location: ' . BASEURL . '/mahasiswa/edit/' . $id);
+                header(
+                    'Location: ' .
+                    BASEURL .
+                    '/mahasiswa/edit/' . $id
+                );
             }
 
             exit;
@@ -191,6 +254,7 @@ class MahasiswaController extends Controller
     {
         $mahasiswaModel = $this->model('Mahasiswa');
 
+        // hapus data
         if ($mahasiswaModel->delete($id)) {
 
             $this->setFlash(
@@ -206,7 +270,12 @@ class MahasiswaController extends Controller
             );
         }
 
-        header('Location: ' . BASEURL . '/mahasiswa/index');
+        header(
+            'Location: ' .
+            BASEURL .
+            '/mahasiswa/index'
+        );
+
         exit;
     }
 }
