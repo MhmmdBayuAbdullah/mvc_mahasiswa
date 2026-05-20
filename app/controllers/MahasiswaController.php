@@ -278,4 +278,186 @@ class MahasiswaController extends Controller
 
         exit;
     }
+
+    // export CSV
+public function exportCSV()
+{
+    $mahasiswaModel = $this->model('Mahasiswa');
+
+    $search = $_GET['search'] ?? '';
+
+    $jurusan = $_GET['jurusan'] ?? '';
+
+    // ambil data
+    if ($search != '' || $jurusan != '') {
+
+        $mahasiswa =
+            $mahasiswaModel->searchAndFilter(
+                $search,
+                $jurusan
+            );
+
+    } else {
+
+        $mahasiswa =
+            $mahasiswaModel->getAll();
+    }
+
+    // header download
+    header('Content-Type: text/csv');
+
+    header(
+        'Content-Disposition: attachment; filename="data_mahasiswa.csv"'
+    );
+
+    $output = fopen('php://output', 'w');
+
+    // header kolom
+    fputcsv($output, [
+        'ID',
+        'NPM',
+        'Nama Lengkap',
+        'Fakultas',
+        'Jurusan',
+        'Tempat Lahir',
+        'Tanggal Lahir',
+        'Jenis Kelamin',
+        'Status'
+    ]);
+
+    // isi data
+    foreach ($mahasiswa as $mhs) {
+
+        fputcsv($output, [
+
+            $mhs['id'],
+            $mhs['npm'],
+            $mhs['nama_lengkap'],
+            $mhs['fakultas'],
+            $mhs['jurusan'],
+            $mhs['tempat_lahir'],
+            $mhs['tanggal_lahir'],
+            $mhs['jenis_kelamin'],
+            ($mhs['status_id'] == 1)
+                ? 'Aktif'
+                : 'Nonaktif'
+
+        ]);
+    }
+
+    fclose($output);
+
+    exit;
+}
+
+// export PDF
+public function exportPDF()
+{
+    require_once '../vendor/autoload.php';
+
+    $mahasiswaModel = $this->model('Mahasiswa');
+
+    $search = $_GET['search'] ?? '';
+
+    $jurusan = $_GET['jurusan'] ?? '';
+
+    // ambil data
+    if ($search != '' || $jurusan != '') {
+
+        $mahasiswa =
+            $mahasiswaModel->searchAndFilter(
+                $search,
+                $jurusan
+            );
+
+    } else {
+
+        $mahasiswa =
+            $mahasiswaModel->getAll();
+    }
+
+    // HTML PDF
+    $html = '
+
+    <h2 style="text-align:center;">
+        Data Mahasiswa
+    </h2>
+
+    <table
+        border="1"
+        cellpadding="5"
+        cellspacing="0"
+        width="100%"
+    >
+
+        <tr>
+
+            <th>No</th>
+            <th>NPM</th>
+            <th>Nama Lengkap</th>
+            <th>Fakultas</th>
+            <th>Jurusan</th>
+            <th>Tempat Lahir</th>
+            <th>Tanggal Lahir</th>
+            <th>Jenis Kelamin</th>
+            <th>Status</th>
+
+        </tr>
+
+    ';
+
+    $no = 1;
+
+    foreach ($mahasiswa as $mhs) {
+
+        $status =
+            ($mhs['status_id'] == 1)
+            ? 'Aktif'
+            : 'Nonaktif';
+
+        $html .= '
+
+        <tr>
+
+            <td>' . $no++ . '</td>
+
+            <td>' . $mhs['npm'] . '</td>
+
+            <td>' . $mhs['nama_lengkap'] . '</td>
+
+            <td>' . $mhs['fakultas'] . '</td>
+
+            <td>' . $mhs['jurusan'] . '</td>
+
+            <td>' . $mhs['tempat_lahir'] . '</td>
+
+            <td>' . $mhs['tanggal_lahir'] . '</td>
+
+            <td>' . $mhs['jenis_kelamin'] . '</td>
+
+            <td>' . $status . '</td>
+
+        </tr>
+        ';
+    }
+
+    $html .= '</table>';
+
+    // Dompdf
+    $dompdf = new Dompdf\Dompdf();
+
+    $dompdf->loadHtml($html);
+
+    $dompdf->setPaper('A4', 'landscape');
+
+    $dompdf->render();
+
+    $dompdf->stream(
+        'data_mahasiswa.pdf',
+        ['Attachment' => false]
+    );
+
+    exit;
+}
+
 }

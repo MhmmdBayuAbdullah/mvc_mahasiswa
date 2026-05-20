@@ -99,6 +99,25 @@
 
 </form>
 
+<div class="mb-3">
+
+    <a
+        href="<?= BASEURL; ?>/mahasiswa/exportCSV?search=<?= $search ?? ''; ?>&jurusan=<?= $jurusan ?? ''; ?>"
+        class="btn btn-success"
+    >
+        Export CSV
+    </a>
+
+    <a
+        href="<?= BASEURL; ?>/mahasiswa/exportPDF?search=<?= $search ?? ''; ?>&jurusan=<?= $jurusan ?? ''; ?>"
+        class="btn btn-danger"
+        target="_blank"
+    >
+        Export PDF
+    </a>
+
+</div>
+
 <table class="table table-striped table-bordered">
 
     <thead class="table-dark">
