@@ -6,7 +6,19 @@ class Controller
     {
         extract($data);
 
-        require_once "../app/views/" . $view . ".php";
+        // ambil isi view
+        ob_start();
+
+        require_once "../app/views/$view.php";
+
+        $content = ob_get_clean();
+
+        // layout
+        require_once "../app/views/layouts/header.php";
+
+        echo $content;
+
+        require_once "../app/views/layouts/footer.php";
     }
 
     public function model($model)
