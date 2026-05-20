@@ -4,6 +4,7 @@
     <title>Data Mahasiswa</title>
 
     <style>
+
         table {
             border-collapse: collapse;
             width: 100%;
@@ -17,6 +18,25 @@
         th {
             background-color: #dddddd;
         }
+
+        a {
+            text-decoration: none;
+        }
+
+        .success {
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
     </style>
 </head>
 
@@ -24,9 +44,34 @@
 
     <h1>Data Mahasiswa</h1>
 
+    <!-- FLASH MESSAGE -->
+    <?php if (isset($_SESSION['flash'])) : ?>
+
+        <div class="<?= $_SESSION['flash']['type']; ?>">
+
+            <?= $_SESSION['flash']['message']; ?>
+
+        </div>
+
+        <?php unset($_SESSION['flash']); ?>
+
+    <?php endif; ?>
+
+    <!-- TOMBOL TAMBAH -->
+    <p>
+
+        <a href="<?= BASEURL; ?>/mahasiswa/create">
+
+            Tambah Mahasiswa
+
+        </a>
+
+    </p>
+
     <table>
 
         <tr>
+
             <th>No</th>
             <th>NPM</th>
             <th>Nama Lengkap</th>
@@ -36,54 +81,85 @@
             <th>Tanggal Lahir</th>
             <th>Jenis Kelamin</th>
             <th>Status</th>
+            <th>Aksi</th>
+
         </tr>
 
         <?php $no = 1; ?>
 
         <?php if (!empty($mahasiswa)) : ?>
 
-    <?php foreach ($mahasiswa as $mhs) : ?>
+            <?php foreach ($mahasiswa as $mhs) : ?>
 
-        <tr>
-            <td><?= $mhs['npm']; ?></td>
-        </tr>
+                <tr>
 
+                    <td><?= $no++; ?></td>
 
-        <tr>
+                    <td><?= $mhs['npm']; ?></td>
 
-            <td><?= $no++; ?></td>
+                    <td><?= $mhs['nama_lengkap']; ?></td>
 
-            <td><?= $mhs['npm']; ?></td>
+                    <td><?= $mhs['fakultas']; ?></td>
 
-            <td><?= $mhs['nama_lengkap']; ?></td>
+                    <td><?= $mhs['jurusan']; ?></td>
 
-            <td><?= $mhs['fakultas']; ?></td>
+                    <td><?= $mhs['tempat_lahir']; ?></td>
 
-            <td><?= $mhs['jurusan']; ?></td>
+                    <td>
 
-            <td><?= $mhs['tempat_lahir']; ?></td>
+                        <?= date(
+                            'd-m-Y',
+                            strtotime($mhs['tanggal_lahir'])
+                        ); ?>
 
-            <td>
-                <?= date('d-m-Y', strtotime($mhs['tanggal_lahir'])); ?>
-            </td>
+                    </td>
 
-            <td><?= $mhs['jenis_kelamin']; ?></td>
+                    <td><?= $mhs['jenis_kelamin']; ?></td>
 
-            <td>
-                <?= ($mhs['status_id'] == 1) ? 'Aktif' : 'Nonaktif'; ?>
-            </td>
+                    <td>
 
-        </tr>
+                        <?= ($mhs['status_id'] == 1)
+                            ? 'Aktif'
+                            : 'Nonaktif'; ?>
 
-        <?php endforeach; ?>
+                    </td>
 
-<?php else : ?>
+                    <td>
 
-    <tr>
-        <td colspan="9">Data mahasiswa kosong</td>
-    </tr>
+                        <a
+                            href="<?= BASEURL; ?>/mahasiswa/edit/<?= $mhs['id']; ?>"
+                        >
+                            Edit
+                        </a>
 
-<?php endif; ?>
+                        |
+
+                        <a
+                            href="<?= BASEURL; ?>/mahasiswa/delete/<?= $mhs['id']; ?>"
+                            onclick="return confirm('Yakin ingin menghapus data ini?')"
+                        >
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            <?php endforeach; ?>
+
+        <?php else : ?>
+
+            <tr>
+
+                <td colspan="10">
+
+                    Data mahasiswa kosong
+
+                </td>
+
+            </tr>
+
+        <?php endif; ?>
 
     </table>
 

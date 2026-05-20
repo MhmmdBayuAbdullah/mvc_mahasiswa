@@ -1,22 +1,14 @@
 <?php
 
-class Mahasiswa
-{
-    private $conn;
+class Mahasiswa {
 
-    public function __construct()
+    public function index()
     {
-        $this->conn = Database::getConnection();
+        echo "<h1>Data Mahasiswa</h1>";
     }
 
-    public function getAll()
+    public function detail($nama = "Tidak ada")
     {
-        $query = "SELECT * FROM mahasiswa ORDER BY id DESC";
-
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo "<h1>Detail Mahasiswa : $nama</h1>";
     }
 }
