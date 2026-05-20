@@ -39,4 +39,36 @@ class Controller
                $bulan[(int)$pecah[1]] . ' ' .
                $pecah[0];
     }
+
+    // FLASH MESSAGE
+    public function setFlash($message, $type = 'success')
+    {
+        $_SESSION['flash'] = [
+            'message' => $message,
+            'type' => $type
+        ];
+    }
+
+    public function flash()
+    {
+        if (isset($_SESSION['flash'])) {
+
+            $flash = $_SESSION['flash'];
+
+            echo "
+                <div style='
+                    padding:10px;
+                    margin-bottom:15px;
+                    background-color:" .
+                    ($flash['type'] == 'success' ? '#d4edda' : '#f8d7da') . ";
+                    color:" .
+                    ($flash['type'] == 'success' ? '#155724' : '#721c24') . ";
+                '>
+                    {$flash['message']}
+                </div>
+            ";
+
+            unset($_SESSION['flash']);
+        }
+    }
 }
