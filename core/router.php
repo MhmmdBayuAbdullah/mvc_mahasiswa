@@ -2,7 +2,7 @@
 
 class Router
 {
-    private $controller = 'home_controller';
+    private $controller = 'HomeController';
     private $method = 'index';
     private $params = [];
 
@@ -27,9 +27,9 @@ class Router
         $url = $this->parseURL();
 
         // controller
-        if (isset($url[0]) && $url[0] != '') {
+        if (isset($url[0])) {
 
-            $controllerName = strtolower($url[0]) . '_controller';
+            $controllerName = ucfirst($url[0]) . 'Controller';
 
             if (file_exists("../app/controllers/$controllerName.php")) {
 
@@ -47,14 +47,7 @@ class Router
         // require controller
         require_once "../app/controllers/" . $this->controller . ".php";
 
-        // nama class controller
-        $className = str_replace(
-            ' ',
-            '',
-            ucwords(str_replace('_', ' ', $this->controller))
-        );
-
-        $this->controller = new $className;
+        $this->controller = new $this->controller;
 
         // method
         if (isset($url[1])) {
@@ -75,7 +68,7 @@ class Router
         // parameter
         $this->params = $url ? array_values($url) : [];
 
-        // jalankan controller dan method
+        // jalankan controller
         call_user_func_array(
             [$this->controller, $this->method],
             $this->params
