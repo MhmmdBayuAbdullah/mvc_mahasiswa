@@ -28,7 +28,10 @@
 
         <div class="container">
 
-            <a class="navbar-brand" href="<?= BASEURL; ?>">
+            <a
+                class="navbar-brand"
+                href="<?= BASEURL; ?>"
+            >
                 MVC Mahasiswa
             </a>
 
@@ -46,8 +49,9 @@
                 id="navbarNav"
             >
 
-                <ul class="navbar-nav">
+                <ul class="navbar-nav me-auto">
 
+                    <!-- HOME -->
                     <li class="nav-item">
 
                         <a
@@ -59,27 +63,85 @@
 
                     </li>
 
-                    <li class="nav-item">
+                    <?php if (isset($_SESSION['user'])) : ?>
 
-                        <a
-                            class="nav-link"
-                            href="<?= BASEURL; ?>/mahasiswa/index"
-                        >
-                            Data Mahasiswa
-                        </a>
+                        <!-- DATA MAHASISWA -->
+                        <li class="nav-item">
 
-                    </li>
+                            <a
+                                class="nav-link"
+                                href="<?= BASEURL; ?>/mahasiswa/index"
+                            >
+                                Data Mahasiswa
+                            </a>
 
-                    <li class="nav-item">
+                        </li>
 
-                        <a
-                            class="nav-link"
-                            href="<?= BASEURL; ?>/mahasiswa/create"
-                        >
-                            Tambah Mahasiswa
-                        </a>
+                        <!-- KHUSUS ADMIN -->
+                        <?php if ($_SESSION['user']['role'] == 'admin') : ?>
 
-                    </li>
+                            <li class="nav-item">
+
+                                <a
+                                    class="nav-link"
+                                    href="<?= BASEURL; ?>/mahasiswa/create"
+                                >
+                                    Tambah Mahasiswa
+                                </a>
+
+                            </li>
+
+                        <?php endif; ?>
+
+                    <?php endif; ?>
+
+                </ul>
+
+                <!-- USER LOGIN -->
+                <ul class="navbar-nav">
+
+                    <?php if (isset($_SESSION['user'])) : ?>
+
+                        <li class="nav-item">
+
+                            <span class="nav-link text-warning">
+
+                                Login sebagai:
+                                <?= $_SESSION['user']['username']; ?>
+
+                                (
+                                <?= $_SESSION['user']['role']; ?>
+                                )
+
+                            </span>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link text-danger"
+                                href="<?= BASEURL; ?>/auth/logout"
+                            >
+                                Logout
+                            </a>
+
+                        </li>
+
+                    <?php else : ?>
+
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link"
+                                href="<?= BASEURL; ?>/auth/login"
+                            >
+                                Login
+                            </a>
+
+                        </li>
+
+                    <?php endif; ?>
 
                 </ul>
 
@@ -89,4 +151,5 @@
 
     </nav>
 
+    <!-- CONTAINER -->
     <div class="container mt-4">
