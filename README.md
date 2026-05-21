@@ -49,35 +49,35 @@ Tambahkan screenshot setiap sesi.
 ![Sesi 1](dokumentasi/struktur_folder.png)
 ![Sesi 1](dokumentasi/test-db.png)
 
-## Sesi 2 - Routing dan Base Controller
-![Sesi 2](dokumentasi/Screenshot 2026-05-07 165543.png)
-![Sesi 2](dokumentasi/Screenshot 2026-05-07 165622.png)
+## Sesi 2 - Routing dan Base Controlle
+![Sesi 2](dokumentasi/sesi2-1.png)
+![Sesi 2](dokumentasi/sesi2-2.png)
 
-## SESI 3: MODEL, MIGRASI DUMMY DATA, DAN MENAMPILKAN DATA MAHASISWA
-![Sesi 3](dokumentasi/Screenshot 2026-05-20 132846.png)
+## SESI 3 - model dan tampil data
+![Sesi 3](dokumentasi/sesi3-1.png)
 
-## SESI 4: TAMBAH DATA MAHASISWA (CREATE)
-![Sesi 4](dokumentasi/Screenshot 2026-05-20 134838.png)
-![Sesi 4](dokumentasi/Screenshot 2026-05-20 134829.png)
+## SESI 4 - fitur create mahasiswa
+![Sesi 4](dokumentasi/sesi4-1.png)
+![Sesi 4](dokumentasi/sesi4-2.png)
 
-## SESI 5: EDIT DAN HAPUS DATA (UPDATE & DELETE)
-![Sesi 5](dokumentasi/Screenshot 2026-05-21 002417.png)
-![Sesi 5](dokumentasi/Screenshot 2026-05-21 002445.png)
-![Sesi 5](dokumentasi/Screenshot 2026-05-21 002517.png)
-![Sesi 5](dokumentasi/Screenshot 2026-05-21 002526.png)
+## SESI 5 - CRUD lengkap mahasiswa
+![Sesi 5](dokumentasi/sesi5-1.png)
+![Sesi 5](dokumentasi/sesi5-2.png)
+![Sesi 5](dokumentasi/sesi5-3.png)
+![Sesi 5](dokumentasi/sesi5-4.png)
 
-## SESI 6: PENCARIAN DAN FILTER DATA 
-![Sesi 6](dokumentasi/Screenshot 2026-05-21 030241.png)
-![Sesi 6](dokumentasi/Screenshot 2026-05-21 030328.png)
+## SESI 6 - pencarian dan filter data
+![Sesi 6](dokumentasi/sesi6-1.png)
+![Sesi 6](dokumentasi/sesi6-2.png)
 
 ## SESI 7: LAYOUT DENGAN BOOTSTRAP & RESPONSIVITAS 
-![Sesi 7](dokumentasi/Screenshot 2026-05-21 032304.png)
-![Sesi 7](dokumentasi/Screenshot 2026-05-21 032319.png)
+![Sesi 7](dokumentasi/sesi7-1.png)
+![Sesi 7](dokumentasi/sesi7-2.png)
 
-## SESI 8: FINAL PROJECT – EXPORT DATA KE PDF/EXCEL & DOKUMENTASI 
-![Sesi 8](dokumentasi/Screenshot 2026-05-21 034213.png)
-![Sesi 8](dokumentasi/Screenshot 2026-05-21 034242.png)
-![Sesi 8](dokumentasi/Screenshot 2026-05-21 034306.png)
+## SESI 8 - export CSV PDF dan dokumentasi
+![Sesi 8](dokumentasi/sesi8-1.png)
+![Sesi 8](dokumentasi/sesi8-2.png)
+![Sesi 8](dokumentasi/sesi8-3.png)
 
 ## Repository
 
